@@ -6,9 +6,12 @@ import Adafruit_DHT
 import schedule
 import argparse
 import sqlite3
+from datetime import datetime
+
+
 
 DATABASE = '/share/power-pi/database/power-sqlite.db'
-
+CTL = 0.01 #charge_time_limit
 l_temp_sensor_type = Adafruit_DHT.DHT22
 l_gpio_ldr_1 = 4
 l_gpio_ldr_2 = 23
@@ -20,6 +23,14 @@ l_poll_minutes = 15
 l_hr_rate_multiply = (60 / l_poll_minutes)
 l_verbosemode = False
 
+ldr1_last_pulse = None
+ldr2_last_pulse = None
+
+def update_realtime_usage(conn, value ):
+        f = open(conn,'w+')
+        f.writelines(value)
+        f.close()
+        
 
 def insert_row(measurement):
     sql = '''INSERT INTO measure_history (temperature, humidity, sensor_count_1, sensor_count_2, sensor_1_rate_mwh, sensor_2_rate_mwh) VALUES (?,?,?,?,?,?)'''
@@ -51,6 +62,11 @@ def light_pulse_seen_1():
     l_cnt_1 = l_cnt_1 + 1
     if l_verbosemode:
         logmsg("      light_pulse_seen_1 {}".format(l_cnt_1))
+    if(ldr1_last_pulse is not None):
+            ldr1_delta = (datetime.now() - ldr1_last_pulse).seconds
+            wattage  = 3600/(ldr1_delta *1200)                        
+            update_realtime_usage("C1.txt",str(wattage)+' KWh')
+    ldr1_last_pulse = datetime.now()
 
 def light_pulse_seen_2():
     global l_cnt_2
@@ -58,6 +74,11 @@ def light_pulse_seen_2():
     l_cnt_2 = l_cnt_2 + 1
     if l_verbosemode:
         logmsg("      light_pulse_seen_2 {}".format(l_cnt_2))
+    if(ldr2_last_pulse is not None):
+            ldr2_delta = (datetime.now() - ldr2_last_pulse).seconds
+            wattage  = 3600/(ldr1_delta *1200)
+            update_realtime_usage("C2.txt",str(wattage)+' KWh')
+    ldr2_last_pulse = datetime.now()
         
 def handle_time_event():
     global l_cnt_1
@@ -81,8 +102,8 @@ def main():
 
     l_verbosemode = args.verbose
 
-    ldr_1 = LightSensor(l_gpio_ldr_1)  
-    ldr_2 = LightSensor(l_gpio_ldr_2)  
+    ldr_1 = LightSensor(l_gpio_ldr_1, charge_time_limit=CTL)  
+    ldr_2 = LightSensor(l_gpio_ldr_2, charge_time_limit=CTL)  
     ldr_1.when_light = light_pulse_seen_1
     ldr_2.when_light = light_pulse_seen_2
     handle_time_event()
