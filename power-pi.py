@@ -23,8 +23,8 @@ l_poll_minutes = 15
 l_hr_rate_multiply = (60 / l_poll_minutes)
 l_verbosemode = False
 
-ldr1_last_pulse = None
-ldr2_last_pulse = None
+l_ldr1_last_pulse = None
+l_ldr2_last_pulse = None
 
 def update_realtime_usage(conn, value ):
         f = open(conn,'w+')
@@ -74,11 +74,11 @@ def light_pulse_seen_2():
     l_cnt_2 = l_cnt_2 + 1
     if l_verbosemode:
         logmsg("      light_pulse_seen_2 {}".format(l_cnt_2))
-    if(ldr2_last_pulse is not None):
-            ldr2_delta = (datetime.now() - ldr2_last_pulse).seconds
+    if(l_ldr2_last_pulse is not None):
+            ldr2_delta = (datetime.now() - l_ldr2_last_pulse).seconds
             wattage  = 3600/(ldr1_delta *1200)
             update_realtime_usage("C2.txt",str(wattage)+' KWh')
-    ldr2_last_pulse = datetime.now()
+    l_ldr2_last_pulse = datetime.now()
         
 def handle_time_event():
     global l_cnt_1
