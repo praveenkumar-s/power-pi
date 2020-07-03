@@ -1,4 +1,5 @@
 from flask import Flask
+import socket
 app = Flask(__name__)
 
 @app.route('/')
@@ -13,4 +14,4 @@ def realtime(c):
     return o
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host= socket.gethostname())
