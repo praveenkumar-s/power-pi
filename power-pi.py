@@ -59,18 +59,20 @@ def logmsg(msg):
 def light_pulse_seen_1():
     global l_cnt_1
     global l_verbosemode
+    global l_ldr1_last_pulse
     l_cnt_1 = l_cnt_1 + 1
     if l_verbosemode:
         logmsg("      light_pulse_seen_1 {}".format(l_cnt_1))
-    if(ldr1_last_pulse is not None):
-            ldr1_delta = (datetime.now() - ldr1_last_pulse).seconds
+    if(l_ldr1_last_pulse is not None):
+            ldr1_delta = (datetime.now() - l_ldr1_last_pulse).seconds
             wattage  = 3600/(ldr1_delta *1200)                        
             update_realtime_usage("C1.txt",str(wattage)+' KWh')
-    ldr1_last_pulse = datetime.now()
+    l_ldr1_last_pulse = datetime.now()
 
 def light_pulse_seen_2():
     global l_cnt_2
     global l_verbosemode
+    global l_ldr2_last_pulse
     l_cnt_2 = l_cnt_2 + 1
     if l_verbosemode:
         logmsg("      light_pulse_seen_2 {}".format(l_cnt_2))
