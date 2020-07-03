@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 
-DATABASE = '/share/power-pi/database/power-sqlite.db'
+DATABASE = 'power-sqlite.db'
 CTL = 0.01 #charge_time_limit
 l_temp_sensor_type = Adafruit_DHT.DHT22
 l_gpio_ldr_1 = 4
@@ -18,7 +18,7 @@ l_gpio_ldr_2 = 23
 l_gpio_temp = 22
 l_cnt_1 = 0
 l_cnt_2 = 0
-l_out_file = "/share/power-pi/power-pi.txt"
+l_out_file = "power-pi.txt"
 l_poll_minutes = 15
 l_hr_rate_multiply = (60 / l_poll_minutes)
 l_verbosemode = False
