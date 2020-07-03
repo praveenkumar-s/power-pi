@@ -86,7 +86,7 @@ def handle_time_event():
     global l_cnt_1
     global l_cnt_2
     l_humidity, l_temperature = Adafruit_DHT.read_retry(l_temp_sensor_type, l_gpio_temp)
-    logmsg("Pulses={},{} Temp={:0.1f}C  l_humidity={:0.1f}%".format(l_cnt_1, l_cnt_2, l_temperature, l_humidity))
+    logmsg("Pulses={},{}".format(l_cnt_1, l_cnt_2))
     measurement = (l_temperature, l_humidity, l_cnt_1, l_cnt_2, l_cnt_1*l_hr_rate_multiply , l_cnt_2*l_hr_rate_multiply )
     insert_row(measurement)
     l_cnt_1 = 0
