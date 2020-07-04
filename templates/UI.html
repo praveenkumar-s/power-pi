@@ -1,0 +1,60 @@
+<html>
+
+<head>
+  <meta http-equiv="refresh" content="10" />
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', { 'packages': ['gauge'] });
+    google.charts.setOnLoadCallback(loadchart);
+
+
+    async function getdata() {
+      let response = await fetch('http://{{HOST}}:5000/get_data');
+      let data = await response.json();
+      return data;
+    }
+
+    function loadchart() {
+   
+          getdata().then(data => drawChart(data));  //  your code here
+          
+   
+    }
+    
+
+    function drawChart(jsd) {
+
+      console.log(jsd['LDR1']);
+      console.log(jsd['LDR2']);
+      var ldr1_realtime_usage = jsd['LDR1'];
+      var ldr2_realtime_usage = jsd['LDR2'];
+      var data = google.visualization.arrayToDataTable([
+        ['Label', 'Value'],
+        ['CONN_1', ldr1_realtime_usage],
+        ['CONN_2', ldr2_realtime_usage]
+      ]);
+
+      var options = {
+        width: 900, height: 230,
+        redFrom: 3, redTo: 5,
+        yellowFrom: 2, yellowTo: 3,
+        minorTicks: 0.5,
+        min: 0,
+        max: 5
+      };
+
+      var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+
+
+
+    }
+  </script>
+</head>
+
+<body>
+  <div id="chart_div" style="width: 400px; height: 120px;"></div>
+</body>
+
+</html>

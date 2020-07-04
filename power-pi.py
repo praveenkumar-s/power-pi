@@ -67,7 +67,7 @@ def light_pulse_seen_1():
             ldr1_delta = (datetime.now() - l_ldr1_last_pulse).seconds
             if(ldr1_delta>0):
                     wattage  = 3600.00/(ldr1_delta *1200.00)
-                    update_realtime_usage("C1.txt",str(wattage)+' KWh')
+                    update_realtime_usage("C1.txt",str(wattage))
     l_ldr1_last_pulse = datetime.now()
 
 def light_pulse_seen_2():
@@ -81,7 +81,7 @@ def light_pulse_seen_2():
             ldr2_delta = (datetime.now() - l_ldr2_last_pulse).seconds
             if(ldr2_delta>0):
                     wattage  = 3600.00/(ldr2_delta *1200.00)
-                    update_realtime_usage("C2.txt",str(wattage)+' KWh')
+                    update_realtime_usage("C2.txt",str(wattage))
     l_ldr2_last_pulse = datetime.now()
         
 def handle_time_event():
