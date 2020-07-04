@@ -65,7 +65,7 @@ def light_pulse_seen_1():
         logmsg("      light_pulse_seen_1 {}".format(l_cnt_1))
     if(l_ldr1_last_pulse is not None):
             ldr1_delta = (datetime.now() - l_ldr1_last_pulse).seconds
-            if(ldr2_delta>0):
+            if(ldr1_delta>0):
                     wattage  = 3600.00/(ldr1_delta *1200.00)
                     update_realtime_usage("C2.txt",str(wattage)+' KWh')
     l_ldr1_last_pulse = datetime.now()
